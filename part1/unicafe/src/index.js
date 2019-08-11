@@ -15,10 +15,14 @@ const Feedback = (props) => (
     </>
 )
 
-const Statistics = (props) => {
-    const calcSum = () => props.good + props.neutral + props.bad
-    const calcAverage = () => calcSum() > 0 ?  (props.good - props.bad) / calcSum() : 0
-    const calcPositive = () => calcSum() > 0 ? props.good / calcSum() * 100 : 0
+const Statistic = ({text, value}) => (
+    <div>{text} {value}</div>
+)
+
+const Statistics = ({good, neutral, bad}) => {
+    const calcSum = () => good + neutral + bad
+    const calcAverage = () => calcSum() > 0 ?  (good - bad) / calcSum() : 0
+    const calcPositive = () => calcSum() > 0 ? good / calcSum() * 100 : 0
 
     if (calcSum() === 0) {
         return (
@@ -28,12 +32,12 @@ const Statistics = (props) => {
 
     return (
         <>
-            <div>good {props.good}</div>
-            <div>neutral {props.neutral}</div>
-            <div>bad {props.bad}</div>
-            <div>all {calcSum()}</div>
-            <div>average {calcAverage()}</div>
-            <div>positive {calcPositive()} %</div>
+            <Statistic text="good" value={good} />
+            <Statistic text="neutral" value={neutral} />
+            <Statistic text="bad" value={bad} />
+            <Statistic text="all" value={calcSum()} />
+            <Statistic text="average" value={calcAverage()} />
+            <Statistic text="positive" value={`${calcPositive()} %`} />
         </>
     )
 }
