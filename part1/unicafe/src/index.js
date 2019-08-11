@@ -16,14 +16,23 @@ const Feedback = (props) => (
     </>
 )
 
-const Statistics = (props) => (
-    <>
-        <h1>statistics</h1>
-        <div>good {props.good}</div>
-        <div>neutral {props.neutral}</div>
-        <div>bad {props.bad}</div>
-    </>
-)
+const Statistics = (props) => {
+    const calcSum = () => props.good + props.neutral + props.bad
+    const calcAverage = () => calcSum() > 0 ?  (props.good - props.bad) / calcSum() : 0
+    const calcPositive = () => calcSum() > 0 ? props.good / calcSum() * 100 : 0
+
+    return (
+        <>
+            <h1>statistics</h1>
+            <div>good {props.good}</div>
+            <div>neutral {props.neutral}</div>
+            <div>bad {props.bad}</div>
+            <div>all {calcSum()}</div>
+            <div>average {calcAverage()}</div>
+            <div>positive {calcPositive()} %</div>
+        </>
+    )
+}
 
 const App = () => {
     // save clicks of each button to own state
