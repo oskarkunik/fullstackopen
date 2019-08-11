@@ -16,7 +16,15 @@ const Feedback = (props) => (
 )
 
 const Statistic = ({text, value}) => (
-    <div>{text} {value}</div>
+    <tr>
+        <td>
+            {text}
+        </td>
+        <td>
+            {value}
+        </td>
+    </tr>
+
 )
 
 const Statistics = ({good, neutral, bad}) => {
@@ -31,14 +39,16 @@ const Statistics = ({good, neutral, bad}) => {
     }
 
     return (
-        <>
-            <Statistic text="good" value={good} />
-            <Statistic text="neutral" value={neutral} />
-            <Statistic text="bad" value={bad} />
-            <Statistic text="all" value={calcSum()} />
-            <Statistic text="average" value={calcAverage()} />
-            <Statistic text="positive" value={`${calcPositive()} %`} />
-        </>
+        <table>
+            <tbody>
+                <Statistic text="good" value={good} />
+                <Statistic text="neutral" value={neutral} />
+                <Statistic text="bad" value={bad} />
+                <Statistic text="all" value={calcSum()} />
+                <Statistic text="average" value={calcAverage()} />
+                <Statistic text="positive" value={`${calcPositive()} %`} />
+            </tbody>
+        </table>
     )
 }
 
