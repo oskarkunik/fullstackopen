@@ -4,6 +4,7 @@ const SingleCountry = ({ country }) => {
   const languages = () => country.languages.map(language => (<li key={language.name}>{ language.name }</li>))
   const flagImg = {
     width: '150px',
+    border: '1px solid rgba(0,0,0,.2)'
   };
   return (
     <div>

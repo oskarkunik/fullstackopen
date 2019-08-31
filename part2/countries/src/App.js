@@ -8,39 +8,43 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all')
       .then(response => setCountries(response.data))
   }, [])
 
-  const handleCountryFilter = (event) => {
-    const val = event.target.value
-    setNewFilter(val)
-
-    const newFilteredCountries = countries
+  const applyFilter = (query) => {
+    const newCountries = countries
       .filter(
-        country => country.name.toLowerCase().includes(val.toLowerCase())
+        country => country.name.toLowerCase().includes(query.toLowerCase())
       )
-
-    if (val.length) {
-      setFilteredCountries(newFilteredCountries)
+    if (query.length) {
+      setFilteredCountries(newCountries)
     } else {
       setFilteredCountries([])
     }
+  }
 
+  const handleCountryFilter = (event) => {
+    const val = event.target.value
+    setSelectedCountry(null)
+    setNewFilter(val)
+    applyFilter(val)
   }
 
   const results = () => {
-    if (filteredCountries.length === 1) {
+    if (selectedCountry) {
       return (
-        <SingleCountry country={filteredCountries[0]} />
+        <SingleCountry country={selectedCountry} />
       )
     }
 
     return (
       <CountryList
         countries={filteredCountries}
+        setSelectedCountry={setSelectedCountry}
       />
     )
   }
