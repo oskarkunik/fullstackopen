@@ -11,10 +11,14 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
 
   useEffect(() => {
+    getAllPersons()
+  }, [])
+
+  const getAllPersons = () => {
     personService
       .getAll()
       .then(allPersons => setPersons(allPersons))
-  }, [])
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -36,6 +40,14 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+  }
+
+  const removePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}`)) {
+      personService
+        .remove(person.id)
+        .then(() => getAllPersons())
+    }
   }
 
   const handleNameChange = (event) => {
@@ -64,12 +76,14 @@ const App = () => {
         newName={newName}
         newNumber={newNumber}
         handleNameChange={handleNameChange}
+        handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
       <Persons
         persons={persons}
         filterString={filterString}
+        removePerson={removePerson}
       />
     </div>
   )
