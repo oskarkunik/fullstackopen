@@ -20,26 +20,48 @@ const App = () => {
       .then(allPersons => setPersons(allPersons))
   }
 
+  const resetForm = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
+  const createPerson = newPersonObject => {
+    personService
+      .create(newPersonObject)
+      .then(addedPerson => {
+        setPersons(persons.concat(addedPerson))
+        resetForm()
+      })
+  }
+
+  const updatePerson = (id, newPersonObject) => {
+    personService
+      .update(id, newPersonObject)
+      .then(updatedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : updatedPerson))
+        resetForm()
+      })
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
-
-    if (persons.some(person => person.name.toLowerCase() === newName.toLowerCase())) {
-      window.alert(`${newName} is already added to phonebook`)
-      return
-    }
 
     const newPersonObject = {
       name: newName,
       number: newNumber,
     }
 
-    personService
-      .create(newPersonObject)
-      .then(addedPerson => {
-        setPersons(persons.concat(addedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+    const existingPerson = persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
+
+    if (existingPerson) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personId = persons.find(person => person.name.toLowerCase() === newName.toLowerCase()).id
+        updatePerson(personId, newPersonObject)
+      }
+      return
+    }
+
+    createPerson(newPersonObject)
   }
 
   const removePerson = (person) => {
@@ -75,7 +97,6 @@ const App = () => {
         addPerson={addPerson}
         newName={newName}
         newNumber={newNumber}
-        handleNameChange={handleNameChange}
         handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
       />
