@@ -83,6 +83,11 @@ const App = () => {
       personService
         .remove(person.id)
         .then(() => getAllPersons())
+        .catch(() => {
+          const errorMessage = `Information of ${person.name} has already been removed from the server`
+          setNotification(errorMessage, 'error')
+          getAllPersons()
+        })
     }
   }
 
